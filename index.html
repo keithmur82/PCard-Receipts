@@ -112,7 +112,7 @@ h1{
 <body>
 <div class="container">
 
-<h1>📄 Receipt Stamper</h1>
+<h1>📄 Receipt Overlay</h1>
 <p class="subtitle">Annotate PDFs → Upload to Dropbox</p>
 
 <!-- STEP 1 -->
@@ -164,7 +164,7 @@ h1{
 <!-- STEP 4 -->
 <div class="card">
   <div class="card-title"><span class="step-num">4</span> Dropbox Folder</div>
-  <input type="text" class="folder-input" id="dropboxFolder" value="/Receipts/CreditCard">
+  <input type="text" class="folder-input" id="dropboxFolder" value="/MIT/Keith Murray/PCards/Keith PCard Receipts/Incoming" placeholder="/MIT/Keith Murray/PCards/Keith PCard Receipts/Incoming">
 </div>
 
 <!-- ACTIONS -->
@@ -196,11 +196,11 @@ const DROPBOX_APP_KEY = 'hh2dnjanntuzn5d';
 // ═══════════════════════════════════════
 //  STATE
 // ═══════════════════════════════════════
-let selectedFile = null;
-let selectedFileBytes = null;
-let stampedPdfBytes = null;
-let dropboxToken = localStorage.getItem('dropbox_token') || null;
-let selectedColor = '#c0392b';
+var selectedFile = null;
+var selectedFileBytes = null;
+var stampedPdfBytes = null;
+var dropboxToken = localStorage.getItem('dropbox_token') || null;
+var selectedColor = '#c0392b';
 
 // ═══════════════════════════════════════
 //  ON LOAD — handle OAuth redirect
@@ -364,7 +364,6 @@ async function stampPdf() {
     var y = size.height - 50;
     var pad = 12;
 
-    // White background box
     page.drawRectangle({
       x: x - pad,
       y: y - 6,
@@ -376,7 +375,6 @@ async function stampPdf() {
       opacity: 0.95
     });
 
-    // Colored text
     page.drawText(overlayText, {
       x: x,
       y: y,
@@ -427,7 +425,7 @@ function downloadPdf() {
 //  DROPBOX UPLOAD
 // ═══════════════════════════════════════
 async function uploadToDropbox(pdfBytes) {
-  var folder = document.getElementById('dropboxFolder').value.trim() || '/Receipts';
+  var folder = document.getElementById('dropboxFolder').value.trim() || '/MIT/Keith Murray/PCards/Keith PCard Receipts/Incoming';
   var baseName = selectedFile.name.replace('.pdf', '');
   var now = new Date();
   var ts = now.getFullYear().toString()
