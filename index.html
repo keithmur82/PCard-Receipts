@@ -15,7 +15,7 @@ body{
 .container{max-width:600px;margin:0 auto}
 h1{
   text-align:center;font-size:28px;font-weight:700;margin-bottom:8px;
-  background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);
+  background:linear-gradient(135deg,#C02184,#00A2C2,#00A793);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
 }
 .subtitle{text-align:center;color:rgba(255,255,255,0.4);font-size:14px;margin-bottom:30px}
@@ -30,28 +30,28 @@ h1{
   letter-spacing:1.2px;color:rgba(255,255,255,0.4);margin-bottom:14px;
 }
 .step-num{
-  display:inline-block;background:linear-gradient(135deg,#6366f1,#8b5cf6);
+  display:inline-block;background:linear-gradient(135deg,#C02184,#771A51);
   color:white;width:24px;height:24px;border-radius:8px;text-align:center;
   line-height:24px;font-size:12px;font-weight:700;margin-right:8px;
 }
 .upload-zone{
-  border:2px dashed rgba(99,102,241,0.4);border-radius:12px;
+  border:2px dashed rgba(192,33,132,0.4);border-radius:12px;
   padding:40px 20px;text-align:center;cursor:pointer;
-  transition:all 0.3s;background:rgba(99,102,241,0.05);
+  transition:all 0.3s;background:rgba(192,33,132,0.05);
 }
 .upload-zone.has-file{
-  border-color:rgba(52,211,153,0.6);background:rgba(52,211,153,0.08);
+  border-color:rgba(0,167,147,0.6);background:rgba(0,167,147,0.08);
 }
 .upload-icon{font-size:40px;margin-bottom:10px}
 .upload-text{font-size:16px;color:rgba(255,255,255,0.6)}
-.upload-filename{font-size:14px;color:#34d399;margin-top:8px;font-weight:600}
+.upload-filename{font-size:14px;color:#00A793;margin-top:8px;font-weight:600}
 #fileInput{display:none}
 .text-input,.folder-input{
   width:100%;background:rgba(0,0,0,0.3);
   border:1px solid rgba(255,255,255,0.1);border-radius:10px;
   padding:14px 16px;color:#fff;font-size:16px;font-family:inherit;outline:none;
 }
-.text-input:focus,.folder-input:focus{border-color:rgba(99,102,241,0.6)}
+.text-input:focus,.folder-input:focus{border-color:rgba(192,33,132,0.6)}
 .text-input::placeholder{color:rgba(255,255,255,0.25)}
 .font-size-row{display:flex;align-items:center;gap:12px;margin-top:12px}
 .font-size-row label{font-size:13px;color:rgba(255,255,255,0.5);white-space:nowrap}
@@ -61,21 +61,26 @@ h1{
 }
 .font-size-slider::-webkit-slider-thumb{
   -webkit-appearance:none;width:22px;height:22px;border-radius:50%;
-  background:linear-gradient(135deg,#6366f1,#8b5cf6);cursor:pointer;
+  background:linear-gradient(135deg,#C02184,#771A51);cursor:pointer;
 }
-.font-size-value{font-size:14px;color:#a78bfa;font-weight:600;min-width:35px;text-align:center}
+.font-size-value{font-size:14px;color:#C02184;font-weight:600;min-width:35px;text-align:center}
 .color-row{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
 .color-option{
-  width:32px;height:32px;border-radius:50%;border:2px solid transparent;
+  width:36px;height:36px;border-radius:50%;border:2px solid transparent;
   cursor:pointer;transition:all 0.2s;
 }
 .color-option:hover{transform:scale(1.15)}
 .color-option.selected{border-color:white;box-shadow:0 0 12px rgba(255,255,255,0.3)}
+.color-label{
+  font-size:10px;color:rgba(255,255,255,0.35);text-align:center;
+  margin-top:4px;
+}
+.color-wrap{display:flex;flex-direction:column;align-items:center}
 .btn-primary{
   width:100%;padding:16px;border:none;border-radius:12px;font-size:17px;
   font-weight:700;cursor:pointer;transition:all 0.3s;
-  background:linear-gradient(135deg,#6366f1,#8b5cf6,#a855f7);
-  color:white;letter-spacing:0.5px;box-shadow:0 4px 20px rgba(99,102,241,0.3);
+  background:linear-gradient(135deg,#C02184,#771A51);
+  color:white;letter-spacing:0.5px;box-shadow:0 4px 20px rgba(192,33,132,0.3);
 }
 .btn-primary:disabled{opacity:0.4;cursor:not-allowed}
 .btn-secondary{
@@ -89,17 +94,17 @@ h1{
   box-shadow:0 4px 20px rgba(0,97,254,0.3);
 }
 .status-bar{margin-top:16px;padding:14px 16px;border-radius:10px;font-size:14px;display:none}
-.status-bar.info{display:block;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);color:#60a5fa}
-.status-bar.success{display:block;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);color:#34d399}
-.status-bar.error{display:block;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#f87171}
+.status-bar.info{display:block;background:rgba(0,162,194,0.1);border:1px solid rgba(0,162,194,0.3);color:#00A2C2}
+.status-bar.success{display:block;background:rgba(0,167,147,0.1);border:1px solid rgba(0,167,147,0.3);color:#00A793}
+.status-bar.error{display:block;background:rgba(192,33,132,0.1);border:1px solid rgba(192,33,132,0.3);color:#C02184}
 .preview-frame{width:100%;height:400px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:white;margin-top:12px;display:none}
 .auth-status{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:12px}
-.auth-status.connected{background:rgba(52,211,153,0.1);color:#34d399}
-.auth-status.disconnected{background:rgba(239,68,68,0.1);color:#f87171}
+.auth-status.connected{background:rgba(0,167,147,0.1);color:#00A793}
+.auth-status.disconnected{background:rgba(192,33,132,0.1);color:#C02184}
 .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
-.dot.green{background:#34d399}.dot.red{background:#f87171}
+.dot.green{background:#00A793}.dot.red{background:#C02184}
 .progress-bar{width:100%;height:4px;background:rgba(255,255,255,0.1);border-radius:2px;margin-top:12px;overflow:hidden;display:none}
-.progress-fill{height:100%;background:linear-gradient(90deg,#6366f1,#a855f7);border-radius:2px;transition:width 0.3s;width:0%}
+.progress-fill{height:100%;background:linear-gradient(90deg,#C02184,#00A2C2);border-radius:2px;transition:width 0.3s;width:0%}
 .spinner{
   display:inline-block;width:16px;height:16px;
   border:2px solid rgba(255,255,255,0.2);border-top-color:white;
@@ -112,8 +117,8 @@ h1{
 <body>
 <div class="container">
 
-<h1>📄 Receipt Overlay</h1>
-<p class="subtitle">Annotate PDFs → Upload to Dropbox</p>
+<h1>📄 Receipt Stamper</h1>
+<p class="subtitle">MIT Biology — Annotate PDFs → Upload to Dropbox</p>
 
 <!-- STEP 1 -->
 <div class="card">
@@ -152,11 +157,26 @@ h1{
   <div class="font-size-row">
     <label>Color</label>
     <div class="color-row" id="colorRow">
-      <div class="color-option selected" style="background:#c0392b" data-color="#c0392b" onclick="selectColor(this)"></div>
-      <div class="color-option" style="background:#2c3e50" data-color="#2c3e50" onclick="selectColor(this)"></div>
-      <div class="color-option" style="background:#0061fe" data-color="#0061fe" onclick="selectColor(this)"></div>
-      <div class="color-option" style="background:#1e8449" data-color="#1e8449" onclick="selectColor(this)"></div>
-      <div class="color-option" style="background:#000000" data-color="#000000" onclick="selectColor(this)"></div>
+      <div class="color-wrap">
+        <div class="color-option selected" style="background:#C02184" data-color="#C02184" onclick="selectColor(this)"></div>
+        <span class="color-label">Pink</span>
+      </div>
+      <div class="color-wrap">
+        <div class="color-option" style="background:#771A51" data-color="#771A51" onclick="selectColor(this)"></div>
+        <span class="color-label">Burgundy</span>
+      </div>
+      <div class="color-wrap">
+        <div class="color-option" style="background:#0D3551" data-color="#0D3551" onclick="selectColor(this)"></div>
+        <span class="color-label">Navy</span>
+      </div>
+      <div class="color-wrap">
+        <div class="color-option" style="background:#00A793" data-color="#00A793" onclick="selectColor(this)"></div>
+        <span class="color-label">Teal</span>
+      </div>
+      <div class="color-wrap">
+        <div class="color-option" style="background:#00A2C2" data-color="#00A2C2" onclick="selectColor(this)"></div>
+        <span class="color-label">Blue</span>
+      </div>
     </div>
   </div>
 </div>
@@ -191,7 +211,7 @@ h1{
 // ═══════════════════════════════════════
 //  PUT YOUR DROPBOX APP KEY HERE
 // ═══════════════════════════════════════
-const DROPBOX_APP_KEY = 'hh2dnjanntuzn5d';
+const DROPBOX_APP_KEY = 'YOUR_APP_KEY_HERE';
 
 // ═══════════════════════════════════════
 //  STATE
@@ -200,7 +220,7 @@ var selectedFile = null;
 var selectedFileBytes = null;
 var stampedPdfBytes = null;
 var dropboxToken = localStorage.getItem('dropbox_token') || null;
-var selectedColor = '#c0392b';
+var selectedColor = '#C02184';
 
 // ═══════════════════════════════════════
 //  ON LOAD — handle OAuth redirect
@@ -340,7 +360,7 @@ function hexToRgb(hex) {
 }
 
 // ═══════════════════════════════════════
-//  PDF STAMPING
+//  PDF STAMPING — FIRST PAGE ONLY
 // ═══════════════════════════════════════
 async function stampPdf() {
   var PDFDocument = PDFLib.PDFDocument;
@@ -355,34 +375,35 @@ async function stampPdf() {
   var pages = pdfDoc.getPages();
   var color = hexToRgb(selectedColor);
 
-  for (var i = 0; i < pages.length; i++) {
-    var page = pages[i];
-    var size = page.getSize();
-    var textWidth = font.widthOfTextAtSize(overlayText, fontSize);
+  // ── FIRST PAGE ONLY ──
+  var page = pages[0];
+  var size = page.getSize();
+  var textWidth = font.widthOfTextAtSize(overlayText, fontSize);
 
-    var x = (size.width - textWidth) / 2;
-    var y = size.height - 50;
-    var pad = 12;
+  var x = (size.width - textWidth) / 2;
+  var y = size.height - 50;
+  var pad = 12;
 
-    page.drawRectangle({
-      x: x - pad,
-      y: y - 6,
-      width: textWidth + pad * 2,
-      height: fontSize + 14,
-      color: rgb(1, 1, 1),
-      borderColor: rgb(0.3, 0.3, 0.3),
-      borderWidth: 1,
-      opacity: 0.95
-    });
+  // White background box
+  page.drawRectangle({
+    x: x - pad,
+    y: y - 6,
+    width: textWidth + pad * 2,
+    height: fontSize + 14,
+    color: rgb(1, 1, 1),
+    borderColor: rgb(0.3, 0.3, 0.3),
+    borderWidth: 1,
+    opacity: 0.95
+  });
 
-    page.drawText(overlayText, {
-      x: x,
-      y: y,
-      size: fontSize,
-      font: font,
-      color: rgb(color.r, color.g, color.b)
-    });
-  }
+  // Colored text
+  page.drawText(overlayText, {
+    x: x,
+    y: y,
+    size: fontSize,
+    font: font,
+    color: rgb(color.r, color.g, color.b)
+  });
 
   stampedPdfBytes = await pdfDoc.save();
   return stampedPdfBytes;
