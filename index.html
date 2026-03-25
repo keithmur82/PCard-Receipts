@@ -5,150 +5,319 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>MIT Biology — Receipt Stamper</title>
 <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@400;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 
-body{
-  font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;
-  background:#0D3551;
-  color:#e0e0e0;min-height:100vh;padding:0;
+:root{
+  --pink:#C02184;
+  --burgundy:#771A51;
+  --navy:#0D3551;
+  --teal:#00A793;
+  --blue:#00A2C2;
+  --white:#ffffff;
+  --off-white:#f7f7f7;
+  --light-gray:#eaeaea;
+  --text-dark:#1a1a1a;
+  --text-mid:#555555;
+  --text-light:#888888;
 }
 
-/* ── Top Banner ── */
-.banner{
-  background:linear-gradient(135deg,#0D3551 0%,#771A51 100%);
-  padding:30px 20px 24px 20px;
+body{
+  font-family:'Montserrat',-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;
+  background:var(--off-white);
+  color:var(--text-dark);
+  min-height:100vh;
+  padding:0;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Top Nav Bar ── */
+.top-bar{
+  background:var(--white);
+  border-bottom:1px solid var(--light-gray);
+  padding:16px 24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+}
+.brand{
+  display:flex;align-items:center;gap:12px;
+}
+.brand-colors{
+  display:flex;gap:3px;
+}
+.brand-dot{
+  width:6px;height:20px;border-radius:2px;
+}
+.brand-text{
+  font-family:'Bitter',Georgia,serif;
+  font-size:18px;font-weight:700;
+  color:var(--navy);
+}
+.brand-text span{
+  font-weight:400;color:var(--text-mid);
+  margin-left:4px;padding-left:8px;
+  border-left:2px solid var(--light-gray);
+}
+
+/* ── Hero Section ── */
+.hero{
+  background:linear-gradient(135deg,var(--navy) 0%,#164060 50%,var(--burgundy) 100%);
+  padding:40px 24px;
   text-align:center;
-  border-bottom:3px solid #C02184;
+  color:white;
 }
-.banner h1{
-  font-size:26px;font-weight:700;color:#ffffff;margin-bottom:4px;
+.hero h1{
+  font-family:'Bitter',Georgia,serif;
+  font-size:28px;font-weight:700;
+  margin-bottom:8px;
 }
-.banner .subtitle{
-  font-size:14px;color:rgba(255,255,255,0.55);
-}
-.logo-bar{
-  display:flex;justify-content:center;align-items:center;
-  gap:12px;margin-bottom:12px;
-}
-.logo-dot{
-  width:10px;height:10px;border-radius:50%;
+.hero p{
+  font-size:15px;
+  color:rgba(255,255,255,0.7);
+  font-weight:400;
 }
 
 /* ── Main Container ── */
 .container{
-  max-width:600px;margin:0 auto;padding:20px;
+  max-width:640px;
+  margin:0 auto;
+  padding:24px 20px;
 }
 
 /* ── Cards ── */
 .card{
-  background:linear-gradient(135deg,rgba(13,53,81,0.95),rgba(13,53,81,0.8));
-  border:1px solid rgba(0,167,147,0.15);
-  border-radius:16px;
-  padding:24px;margin-bottom:16px;
-  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  background:var(--white);
+  border:1px solid var(--light-gray);
+  border-radius:12px;
+  padding:28px 24px;
+  margin-bottom:20px;
+  box-shadow:0 1px 3px rgba(0,0,0,0.04);
 }
 .card-title{
-  font-size:13px;font-weight:600;text-transform:uppercase;
-  letter-spacing:1.2px;color:#00A793;margin-bottom:14px;
+  font-family:'Bitter',Georgia,serif;
+  font-size:16px;font-weight:700;
+  color:var(--navy);
+  margin-bottom:16px;
+  display:flex;align-items:center;gap:10px;
 }
-.step-num{
-  display:inline-block;
-  background:#C02184;
-  color:white;width:24px;height:24px;border-radius:8px;text-align:center;
-  line-height:24px;font-size:12px;font-weight:700;margin-right:8px;
+.step-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  background:var(--pink);
+  color:white;
+  width:26px;height:26px;border-radius:50%;
+  font-family:'Montserrat',sans-serif;
+  font-size:13px;font-weight:700;
+  flex-shrink:0;
 }
+
+/* ── Source Buttons ── */
+.source-row{
+  display:flex;gap:12px;margin-bottom:20px;
+}
+.btn-source{
+  flex:1;
+  padding:20px 12px;
+  border:2px solid var(--light-gray);
+  border-radius:12px;
+  background:var(--white);
+  cursor:pointer;
+  transition:all 0.25s;
+  text-align:center;
+}
+.btn-source:active{
+  transform:scale(0.97);
+}
+.btn-source.active{
+  border-color:var(--blue);
+  background:rgba(0,162,194,0.04);
+}
+.source-icon{
+  font-size:32px;
+  display:block;
+  margin-bottom:8px;
+}
+.source-label{
+  font-size:14px;
+  font-weight:600;
+  color:var(--text-dark);
+  display:block;
+}
+.source-desc{
+  font-size:11px;
+  color:var(--text-light);
+  margin-top:2px;
+  display:block;
+}
+#fileInput,#cameraInput,#extraPageInput{display:none}
 
 /* ── Upload Zone ── */
 .upload-zone{
-  border:2px dashed rgba(0,162,194,0.4);border-radius:12px;
-  padding:40px 20px;text-align:center;cursor:pointer;
-  transition:all 0.3s;background:rgba(0,162,194,0.05);
+  border:2px dashed var(--light-gray);
+  border-radius:10px;
+  padding:36px 20px;
+  text-align:center;
+  cursor:pointer;
+  transition:all 0.3s;
+  background:var(--off-white);
 }
 .upload-zone:active{
-  background:rgba(0,162,194,0.12);
+  background:rgba(0,162,194,0.06);
+  border-color:var(--blue);
 }
 .upload-zone.has-file{
-  border-color:rgba(0,167,147,0.6);background:rgba(0,167,147,0.08);
+  border-color:var(--teal);
+  border-style:solid;
+  background:rgba(0,167,147,0.04);
 }
-.upload-icon{font-size:40px;margin-bottom:10px}
-.upload-text{font-size:16px;color:rgba(255,255,255,0.6)}
-.upload-filename{font-size:14px;color:#00A793;margin-top:8px;font-weight:600}
-#fileInput{display:none}
+.upload-icon{font-size:36px;margin-bottom:8px}
+.upload-text{font-size:15px;color:var(--text-mid);font-weight:500}
+.upload-filename{
+  font-size:13px;color:var(--teal);margin-top:8px;font-weight:600;
+  word-break:break-all;
+}
+
+/* ── Scan Preview ── */
+.scan-preview-container{
+  display:none;
+  margin-top:16px;
+  text-align:center;
+}
+.scan-preview-img{
+  max-width:100%;
+  max-height:280px;
+  object-fit:contain;
+  border-radius:8px;
+  border:1px solid var(--light-gray);
+  background:white;
+}
+.scan-info{
+  font-size:12px;
+  color:var(--text-light);
+  margin-top:8px;
+}
 
 /* ── Inputs ── */
+.input-group{margin-bottom:16px}
+.input-group:last-child{margin-bottom:0}
+.input-label{
+  font-size:12px;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:0.8px;
+  color:var(--text-light);
+  margin-bottom:8px;
+  display:block;
+}
 .text-input{
-  width:100%;background:rgba(0,0,0,0.25);
-  border:1px solid rgba(0,167,147,0.2);border-radius:10px;
-  padding:14px 16px;color:#fff;font-size:16px;font-family:inherit;outline:none;
+  width:100%;
+  background:var(--off-white);
+  border:1px solid var(--light-gray);
+  border-radius:8px;
+  padding:12px 14px;
+  color:var(--text-dark);
+  font-size:16px;
+  font-family:'Montserrat',sans-serif;
+  outline:none;
   transition:border-color 0.3s;
 }
-.text-input:focus{border-color:#00A2C2}
-.text-input::placeholder{color:rgba(255,255,255,0.25)}
-
-.input-label{
-  font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:8px;display:block;
+.text-input:focus{
+  border-color:var(--blue);
+  background:white;
 }
+.text-input::placeholder{color:#bbb}
 
 /* ── Font Size ── */
-.font-size-row{display:flex;align-items:center;gap:12px;margin-top:12px}
-.font-size-row label{font-size:13px;color:rgba(255,255,255,0.5);white-space:nowrap}
+.font-size-row{
+  display:flex;align-items:center;gap:12px;
+}
+.font-size-row label{
+  font-size:12px;font-weight:600;text-transform:uppercase;
+  letter-spacing:0.8px;color:var(--text-light);white-space:nowrap;
+}
 .font-size-slider{
-  flex:1;-webkit-appearance:none;height:4px;border-radius:2px;
-  background:rgba(255,255,255,0.1);outline:none;
+  flex:1;-webkit-appearance:none;height:3px;border-radius:2px;
+  background:var(--light-gray);outline:none;
 }
 .font-size-slider::-webkit-slider-thumb{
-  -webkit-appearance:none;width:24px;height:24px;border-radius:50%;
-  background:linear-gradient(135deg,#C02184,#771A51);cursor:pointer;
-  border:2px solid rgba(255,255,255,0.3);
+  -webkit-appearance:none;width:22px;height:22px;border-radius:50%;
+  background:var(--pink);cursor:pointer;
+  border:3px solid white;
+  box-shadow:0 1px 4px rgba(0,0,0,0.2);
 }
-.font-size-value{font-size:14px;color:#00A2C2;font-weight:600;min-width:35px;text-align:center}
+.font-size-value{
+  font-size:14px;color:var(--navy);font-weight:700;
+  min-width:40px;text-align:center;
+}
 
 /* ── Buttons ── */
 .btn-primary{
-  width:100%;padding:16px;border:none;border-radius:12px;font-size:17px;
-  font-weight:700;cursor:pointer;transition:all 0.3s;
-  color:white;letter-spacing:0.5px;
+  width:100%;padding:15px;border:none;border-radius:10px;font-size:16px;
+  font-weight:700;cursor:pointer;transition:all 0.25s;
+  color:white;letter-spacing:0.3px;
+  font-family:'Montserrat',sans-serif;
 }
 .btn-primary:disabled{opacity:0.35;cursor:not-allowed}
 .btn-primary:active:not(:disabled){transform:scale(0.98)}
 
-.btn-stamp{
-  background:linear-gradient(135deg,#C02184,#771A51);
-  box-shadow:0 4px 20px rgba(192,33,132,0.3);
+.btn-preview{
+  background:var(--navy);
+  box-shadow:0 2px 8px rgba(13,53,81,0.25);
 }
-
 .btn-save{
-  background:linear-gradient(135deg,#00A793,#00A2C2);
-  box-shadow:0 4px 20px rgba(0,167,147,0.3);
-  margin-top:10px;
+  background:linear-gradient(135deg,var(--teal),var(--blue));
+  box-shadow:0 2px 8px rgba(0,167,147,0.25);
+  margin-top:12px;
 }
-
-.btn-secondary{
-  width:100%;padding:14px;border:1px solid rgba(0,167,147,0.25);
-  border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;
-  background:rgba(0,167,147,0.08);color:rgba(255,255,255,0.7);
-  transition:all 0.3s;margin-top:10px;
+.btn-reset{
+  width:100%;padding:13px;
+  border:1px solid var(--light-gray);
+  border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;
+  background:white;color:var(--text-mid);
+  transition:all 0.25s;margin-top:12px;
+  font-family:'Montserrat',sans-serif;
 }
-.btn-secondary:active{background:rgba(0,167,147,0.15)}
+.btn-reset:active{background:var(--off-white)}
 
-/* ── Status ── */
-.status-bar{margin-top:16px;padding:14px 16px;border-radius:10px;font-size:14px;display:none}
-.status-bar.info{display:block;background:rgba(0,162,194,0.1);border:1px solid rgba(0,162,194,0.3);color:#00A2C2}
-.status-bar.success{display:block;background:rgba(0,167,147,0.1);border:1px solid rgba(0,167,147,0.3);color:#00A793}
-.status-bar.error{display:block;background:rgba(192,33,132,0.1);border:1px solid rgba(192,33,132,0.3);color:#C02184}
+/* ── Status Bar ── */
+.status-bar{
+  margin-top:16px;padding:12px 16px;border-radius:8px;
+  font-size:13px;display:none;font-weight:500;
+}
+.status-bar.info{
+  display:block;
+  background:rgba(0,162,194,0.08);
+  border:1px solid rgba(0,162,194,0.2);
+  color:var(--blue);
+}
+.status-bar.success{
+  display:block;
+  background:rgba(0,167,147,0.08);
+  border:1px solid rgba(0,167,147,0.2);
+  color:var(--teal);
+}
+.status-bar.error{
+  display:block;
+  background:rgba(192,33,132,0.06);
+  border:1px solid rgba(192,33,132,0.15);
+  color:var(--pink);
+}
 
 /* ── Preview ── */
 .preview-frame{
-  width:100%;height:500px;border-radius:10px;
-  border:1px solid rgba(0,167,147,0.2);background:white;
-  margin-top:12px;display:none;
+  width:100%;height:500px;border-radius:8px;
+  border:1px solid var(--light-gray);background:white;
+  margin-top:16px;display:none;
 }
 
 /* ── Spinner ── */
 .spinner{
-  display:inline-block;width:16px;height:16px;
-  border:2px solid rgba(255,255,255,0.2);border-top-color:white;
+  display:inline-block;width:14px;height:14px;
+  border:2px solid rgba(0,0,0,0.1);
+  border-top-color:var(--navy);
   border-radius:50%;animation:spin 0.8s linear infinite;
   margin-right:8px;vertical-align:middle;
 }
@@ -156,84 +325,166 @@ body{
 
 /* ── Footer ── */
 .footer{
-  text-align:center;padding:20px;
-  color:rgba(255,255,255,0.2);font-size:11px;
+  text-align:center;padding:24px 20px 32px 20px;
 }
 .footer-colors{
-  display:flex;justify-content:center;gap:6px;margin-bottom:8px;
+  display:flex;justify-content:center;gap:4px;margin-bottom:10px;
 }
-.footer-dot{width:8px;height:8px;border-radius:50%}
+.footer-bar{
+  width:24px;height:4px;border-radius:2px;
+}
+.footer-text{
+  font-size:11px;color:var(--text-light);
+}
 
-/* ── Reset Button ── */
-.btn-reset{
-  width:100%;padding:14px;border:1px solid rgba(192,33,132,0.25);
-  border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;
-  background:rgba(192,33,132,0.08);color:rgba(255,255,255,0.5);
-  transition:all 0.3s;margin-top:10px;
+/* ── Divider ── */
+.divider{
+  display:flex;align-items:center;gap:12px;
+  margin:16px 0;color:var(--text-light);font-size:12px;font-weight:600;
+  text-transform:uppercase;letter-spacing:1px;
 }
-.btn-reset:active{background:rgba(192,33,132,0.15)}
+.divider::before,.divider::after{
+  content:'';flex:1;height:1px;background:var(--light-gray);
+}
+
+/* ── Add Page Zone ── */
+.add-page-zone{
+  border:2px dashed var(--light-gray);
+  border-radius:10px;
+  padding:20px;
+  text-align:center;
+  cursor:pointer;
+  transition:all 0.3s;
+  background:var(--off-white);
+  margin-top:8px;
+}
+.add-page-zone:active{
+  background:rgba(0,162,194,0.06);
+  border-color:var(--blue);
+}
 </style>
 </head>
 <body>
 
-<!-- ── BANNER ── -->
-<div class="banner">
-  <div class="logo-bar">
-    <div class="logo-dot" style="background:#C02184"></div>
-    <div class="logo-dot" style="background:#771A51"></div>
-    <div class="logo-dot" style="background:#0D3551"></div>
-    <div class="logo-dot" style="background:#00A793"></div>
-    <div class="logo-dot" style="background:#00A2C2"></div>
+<!-- ── TOP NAV BAR ── -->
+<div class="top-bar">
+  <div class="brand">
+    <div class="brand-colors">
+      <div class="brand-dot" style="background:#C02184"></div>
+      <div class="brand-dot" style="background:#771A51"></div>
+      <div class="brand-dot" style="background:#0D3551"></div>
+      <div class="brand-dot" style="background:#00A793"></div>
+      <div class="brand-dot" style="background:#00A2C2"></div>
+    </div>
+    <div class="brand-text">MIT Biology<span>Receipts</span></div>
   </div>
-  <h1>📄 Receipt Stamper</h1>
-  <div class="subtitle">MIT Biology — Stamp &amp; Save PDFs</div>
+</div>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <h1>Receipt Stamper</h1>
+  <p>Scan or upload receipts, stamp, and save</p>
 </div>
 
 <div class="container">
 
-<!-- STEP 1: SELECT PDF -->
+<!-- STEP 1: SELECT OR SCAN -->
 <div class="card">
-  <div class="card-title"><span class="step-num">1</span> Select Receipt PDF</div>
-  <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
-    <div class="upload-icon" id="uploadIcon">📎</div>
-    <div class="upload-text" id="uploadText">Tap to select a PDF</div>
-    <div class="upload-filename" id="uploadFilename"></div>
+  <div class="card-title">
+    <span class="step-badge">1</span>
+    Select Receipt
   </div>
-  <input type="file" id="fileInput" accept="application/pdf" onchange="handleFile(this)">
+
+  <div class="source-row">
+    <div class="btn-source active" id="srcUpload" onclick="setSource('upload')">
+      <span class="source-icon">📄</span>
+      <span class="source-label">Upload PDF</span>
+      <span class="source-desc">From Files app</span>
+    </div>
+    <div class="btn-source" id="srcScan" onclick="setSource('scan')">
+      <span class="source-icon">📸</span>
+      <span class="source-label">Scan Receipt</span>
+      <span class="source-desc">Use camera</span>
+    </div>
+  </div>
+
+  <!-- Upload area -->
+  <div id="uploadArea">
+    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+      <div class="upload-icon" id="uploadIcon">📎</div>
+      <div class="upload-text" id="uploadText">Tap to select a PDF</div>
+      <div class="upload-filename" id="uploadFilename"></div>
+    </div>
+    <input type="file" id="fileInput" accept="application/pdf" onchange="handleFileUpload(this)">
+  </div>
+
+  <!-- Scan area -->
+  <div id="scanArea" style="display:none">
+    <div class="upload-zone" id="scanZone" onclick="document.getElementById('cameraInput').click()">
+      <div class="upload-icon" id="scanIcon">📸</div>
+      <div class="upload-text" id="scanText">Tap to open camera</div>
+      <div class="upload-filename" id="scanFilename"></div>
+    </div>
+    <input type="file" id="cameraInput" accept="image/*" capture="environment" onchange="handleScan(this)">
+
+    <div class="scan-preview-container" id="scanPreviewContainer">
+      <img class="scan-preview-img" id="scanPreviewImg" alt="Scanned receipt">
+      <div class="scan-info" id="scanInfo"></div>
+    </div>
+
+    <div id="extraPagesArea" style="display:none;margin-top:12px;">
+      <div class="divider">Additional Pages</div>
+      <div id="extraPagesList"></div>
+      <div class="add-page-zone" onclick="document.getElementById('extraPageInput').click()">
+        <div class="upload-text">＋ Add another page</div>
+      </div>
+      <input type="file" id="extraPageInput" accept="image/*" capture="environment" onchange="handleExtraPage(this)">
+    </div>
+  </div>
 </div>
 
 <!-- STEP 2: OVERLAY TEXT -->
 <div class="card">
-  <div class="card-title"><span class="step-num">2</span> Overlay Text</div>
-  <input type="text" class="text-input" id="overlayText" placeholder="e.g. SUBMITTED - Q1 2026" value="SUBMITTED">
-  <div class="font-size-row">
-    <label>Size</label>
-    <input type="range" class="font-size-slider" id="fontSize" min="12" max="48" value="26" oninput="updateFontSizeLabel()">
-    <span class="font-size-value" id="fontSizeLabel">26pt</span>
+  <div class="card-title">
+    <span class="step-badge">2</span>
+    Overlay Text
+  </div>
+  <div class="input-group">
+    <label class="input-label">Stamp Text</label>
+    <input type="text" class="text-input" id="overlayText" placeholder="e.g. SUBMITTED - Q1 2026" value="SUBMITTED">
+  </div>
+  <div class="input-group">
+    <div class="font-size-row">
+      <label>Size</label>
+      <input type="range" class="font-size-slider" id="fontSize" min="12" max="48" value="26" oninput="updateFontSizeLabel()">
+      <span class="font-size-value" id="fontSizeLabel">26pt</span>
+    </div>
   </div>
 </div>
 
-<!-- STEP 3: NAME YOUR FILE -->
+<!-- STEP 3: SAVE AS -->
 <div class="card">
-  <div class="card-title"><span class="step-num">3</span> Save As</div>
-  <span class="input-label">File name (without .pdf)</span>
-  <input type="text" class="text-input" id="outputName" placeholder="e.g. Lunch_Receipt_Jan2026">
+  <div class="card-title">
+    <span class="step-badge">3</span>
+    Save As
+  </div>
+  <div class="input-group">
+    <label class="input-label">File Name</label>
+    <input type="text" class="text-input" id="outputName" placeholder="e.g. Lunch_Receipt_Jan2026">
+  </div>
 </div>
 
 <!-- STEP 4: ACTIONS -->
 <div class="card">
-  <button class="btn-primary btn-stamp" id="btnPreview" onclick="previewPdf()" disabled>
-    👁 Preview Stamped PDF
+  <button class="btn-primary btn-preview" id="btnPreview" onclick="previewPdf()" disabled>
+    Preview Stamped PDF
   </button>
-
   <button class="btn-primary btn-save" id="btnSave" onclick="savePdf()" style="display:none">
     💾 Save PDF
   </button>
-
   <button class="btn-reset" id="btnReset" onclick="resetAll()" style="display:none">
-    🔄 Start Over
+    ↺ Start Over
   </button>
-
   <div class="status-bar" id="statusBar"></div>
   <iframe class="preview-frame" id="previewFrame"></iframe>
 </div>
@@ -243,13 +494,13 @@ body{
 <!-- ── FOOTER ── -->
 <div class="footer">
   <div class="footer-colors">
-    <div class="footer-dot" style="background:#C02184"></div>
-    <div class="footer-dot" style="background:#771A51"></div>
-    <div class="footer-dot" style="background:#0D3551"></div>
-    <div class="footer-dot" style="background:#00A793"></div>
-    <div class="footer-dot" style="background:#00A2C2"></div>
+    <div class="footer-bar" style="background:#C02184"></div>
+    <div class="footer-bar" style="background:#771A51"></div>
+    <div class="footer-bar" style="background:#0D3551"></div>
+    <div class="footer-bar" style="background:#00A793"></div>
+    <div class="footer-bar" style="background:#00A2C2"></div>
   </div>
-  MIT Biology — Receipt Stamper
+  <div class="footer-text">MIT Biology — Receipt Stamper</div>
 </div>
 
 <script>
@@ -259,50 +510,181 @@ body{
 var selectedFile = null;
 var selectedFileBytes = null;
 var stampedPdfBytes = null;
+var currentSource = 'upload';
+var scannedImages = [];
 
 // ═══════════════════════════════════════
-//  FILE HANDLING
+//  SOURCE TOGGLE
 // ═══════════════════════════════════════
-function handleFile(input) {
+function setSource(source) {
+  currentSource = source;
+  document.getElementById('srcUpload').classList.toggle('active', source === 'upload');
+  document.getElementById('srcScan').classList.toggle('active', source === 'scan');
+  document.getElementById('uploadArea').style.display = source === 'upload' ? 'block' : 'none';
+  document.getElementById('scanArea').style.display = source === 'scan' ? 'block' : 'none';
+  selectedFileBytes = null;
+  stampedPdfBytes = null;
+  scannedImages = [];
+  updateButtons();
+}
+
+// ═══════════════════════════════════════
+//  FILE UPLOAD (PDF)
+// ═══════════════════════════════════════
+function handleFileUpload(input) {
   var file = input.files[0];
   if (!file) return;
   if (file.type !== 'application/pdf') {
-    setStatus('❌ Please select a PDF file', 'error');
+    setStatus('Please select a PDF file', 'error');
     return;
   }
   selectedFile = file;
   stampedPdfBytes = null;
-
-  // Auto-fill the save name from the original filename
-  var baseName = file.name.replace('.pdf', '').replace('.PDF', '');
+  var baseName = file.name.replace(/\.pdf$/i, '');
   document.getElementById('outputName').value = baseName + '_stamped';
-
   var reader = new FileReader();
   reader.onload = function(e) {
     selectedFileBytes = new Uint8Array(e.target.result);
-    updateFileUI();
+    updateUploadUI(true, file.name);
     updateButtons();
     setStatus('Loaded: ' + file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)', 'info');
   };
   reader.readAsArrayBuffer(file);
 }
 
-function updateFileUI() {
+function updateUploadUI(hasFile, name) {
   var zone = document.getElementById('uploadZone');
   var icon = document.getElementById('uploadIcon');
   var text = document.getElementById('uploadText');
   var fname = document.getElementById('uploadFilename');
-  if (selectedFile) {
+  if (hasFile) {
     zone.classList.add('has-file');
     icon.textContent = '✅';
     text.textContent = 'PDF loaded — tap to change';
-    fname.textContent = selectedFile.name;
+    fname.textContent = name;
   } else {
     zone.classList.remove('has-file');
     icon.textContent = '📎';
     text.textContent = 'Tap to select a PDF';
     fname.textContent = '';
   }
+}
+
+// ═══════════════════════════════════════
+//  CAMERA SCAN
+// ═══════════════════════════════════════
+function handleScan(input) {
+  var file = input.files[0];
+  if (!file) return;
+  setStatus('<span class="spinner"></span> Processing image...', 'info');
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = new Image();
+    img.onload = function() {
+      scannedImages = [{
+        dataUrl: e.target.result,
+        width: img.naturalWidth,
+        height: img.naturalHeight
+      }];
+      var scanZone = document.getElementById('scanZone');
+      scanZone.classList.add('has-file');
+      document.getElementById('scanIcon').textContent = '✅';
+      document.getElementById('scanText').textContent = 'Scanned — tap to retake';
+      document.getElementById('scanFilename').textContent = file.name;
+      document.getElementById('scanPreviewImg').src = e.target.result;
+      document.getElementById('scanInfo').textContent =
+        img.naturalWidth + ' × ' + img.naturalHeight + ' px — ' +
+        (file.size / 1024).toFixed(0) + ' KB';
+      document.getElementById('scanPreviewContainer').style.display = 'block';
+      document.getElementById('extraPagesArea').style.display = 'block';
+      var dateStr = new Date().toISOString().slice(0, 10);
+      document.getElementById('outputName').value = 'Receipt_' + dateStr + '_stamped';
+      convertImagesToPdf();
+      setStatus('Receipt scanned successfully', 'success');
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleExtraPage(input) {
+  var file = input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = new Image();
+    img.onload = function() {
+      scannedImages.push({
+        dataUrl: e.target.result,
+        width: img.naturalWidth,
+        height: img.naturalHeight
+      });
+      var list = document.getElementById('extraPagesList');
+      var thumb = document.createElement('div');
+      thumb.style.cssText = 'display:inline-block;margin:4px;';
+      var thumbImg = document.createElement('img');
+      thumbImg.src = e.target.result;
+      thumbImg.style.cssText = 'width:80px;height:100px;object-fit:cover;border-radius:6px;border:1px solid #eaeaea;';
+      var label = document.createElement('div');
+      label.textContent = 'Page ' + scannedImages.length;
+      label.style.cssText = 'font-size:10px;text-align:center;color:#888;margin-top:4px;';
+      thumb.appendChild(thumbImg);
+      thumb.appendChild(label);
+      list.appendChild(thumb);
+      input.value = '';
+      convertImagesToPdf();
+      setStatus('Page ' + scannedImages.length + ' added', 'success');
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// ═══════════════════════════════════════
+//  CONVERT SCANNED IMAGES TO PDF
+// ═══════════════════════════════════════
+async function convertImagesToPdf() {
+  var PDFDocument = PDFLib.PDFDocument;
+  var pdfDoc = await PDFDocument.create();
+
+  for (var i = 0; i < scannedImages.length; i++) {
+    var imgData = scannedImages[i];
+    var dataUrl = imgData.dataUrl;
+    var img;
+    if (dataUrl.indexOf('image/png') !== -1) {
+      img = await pdfDoc.embedPng(dataUrl);
+    } else {
+      img = await pdfDoc.embedJpg(dataUrl);
+    }
+
+    var pageWidth = 612;
+    var pageHeight = 792;
+    var imgAspect = img.width / img.height;
+    var pageAspect = pageWidth / pageHeight;
+    var drawWidth, drawHeight, drawX, drawY;
+
+    if (imgAspect > pageAspect) {
+      drawWidth = pageWidth - 40;
+      drawHeight = drawWidth / imgAspect;
+      drawX = 20;
+      drawY = pageHeight - drawHeight - 20;
+    } else {
+      drawHeight = pageHeight - 40;
+      drawWidth = drawHeight * imgAspect;
+      drawX = (pageWidth - drawWidth) / 2;
+      drawY = 20;
+    }
+
+    var page = pdfDoc.addPage([pageWidth, pageHeight]);
+    page.drawImage(img, {
+      x: drawX, y: drawY,
+      width: drawWidth, height: drawHeight
+    });
+  }
+
+  selectedFileBytes = await pdfDoc.save();
+  selectedFile = { name: 'scanned_receipt.pdf' };
+  updateButtons();
 }
 
 // ═══════════════════════════════════════
@@ -338,7 +720,7 @@ async function stampPdf() {
   var font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
   var pages = pdfDoc.getPages();
 
-  // ── FIRST PAGE ONLY ──
+  // FIRST PAGE ONLY
   var page = pages[0];
   var size = page.getSize();
   var textWidth = font.widthOfTextAtSize(overlayText, fontSize);
@@ -348,14 +730,14 @@ async function stampPdf() {
   var y = size.height - 50;
   var pad = 12;
 
-  // White background box
+  // White background box with navy border
   page.drawRectangle({
     x: x - pad,
     y: y - 6,
     width: textWidth + pad * 2,
     height: fontSize + 14,
     color: rgb(1, 1, 1),
-    borderColor: rgb(0.05, 0.21, 0.32),  // MIT Navy border
+    borderColor: rgb(0.05, 0.21, 0.32),
     borderWidth: 1,
     opacity: 0.95
   });
@@ -366,7 +748,7 @@ async function stampPdf() {
     y: y,
     size: fontSize,
     font: font,
-    color: rgb(0.05, 0.21, 0.32)  // #0D3551 MIT Navy
+    color: rgb(0.05, 0.21, 0.32)
   });
 
   stampedPdfBytes = await pdfDoc.save();
@@ -385,34 +767,22 @@ async function previewPdf() {
     var frame = document.getElementById('previewFrame');
     frame.src = url;
     frame.style.display = 'block';
-
-    // Show save & reset buttons
     document.getElementById('btnSave').style.display = 'block';
     document.getElementById('btnReset').style.display = 'block';
-
-    setStatus('✅ Preview ready — check it below, then tap Save', 'success');
+    setStatus('Preview ready — review below, then tap Save', 'success');
   } catch (err) {
-    setStatus('❌ Error: ' + err.message, 'error');
+    setStatus('Error: ' + err.message, 'error');
   }
 }
 
 // ═══════════════════════════════════════
 //  SAVE / DOWNLOAD
-//  On iPad Safari this opens the Share
-//  sheet so you can pick Files, AirDrop,
-//  Dropbox, etc.
 // ═══════════════════════════════════════
 function savePdf() {
   if (!stampedPdfBytes) return;
-
   var fileName = document.getElementById('outputName').value.trim();
-  if (!fileName) {
-    fileName = 'receipt_stamped';
-  }
-  // Make sure it ends with .pdf
-  if (!fileName.toLowerCase().endsWith('.pdf')) {
-    fileName += '.pdf';
-  }
+  if (!fileName) fileName = 'receipt_stamped';
+  if (!fileName.toLowerCase().endsWith('.pdf')) fileName += '.pdf';
 
   var blob = new Blob([stampedPdfBytes], { type: 'application/pdf' });
   var url = URL.createObjectURL(blob);
@@ -422,12 +792,9 @@ function savePdf() {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
+  setTimeout(function() { URL.revokeObjectURL(url); }, 5000);
 
-  setTimeout(function() {
-    URL.revokeObjectURL(url);
-  }, 5000);
-
-  setStatus('✅ Saving <strong>' + fileName + '</strong> — check your Downloads or choose a location from the share sheet', 'success');
+  setStatus('Saving <strong>' + fileName + '</strong> — choose a location from the share sheet', 'success');
 }
 
 // ═══════════════════════════════════════
@@ -437,8 +804,10 @@ function resetAll() {
   selectedFile = null;
   selectedFileBytes = null;
   stampedPdfBytes = null;
+  scannedImages = [];
 
   document.getElementById('fileInput').value = '';
+  document.getElementById('cameraInput').value = '';
   document.getElementById('overlayText').value = 'SUBMITTED';
   document.getElementById('outputName').value = '';
   document.getElementById('fontSize').value = 26;
@@ -448,9 +817,19 @@ function resetAll() {
   document.getElementById('btnSave').style.display = 'none';
   document.getElementById('btnReset').style.display = 'none';
 
-  updateFileUI();
+  updateUploadUI(false);
+
+  var scanZone = document.getElementById('scanZone');
+  scanZone.classList.remove('has-file');
+  document.getElementById('scanIcon').textContent = '📸';
+  document.getElementById('scanText').textContent = 'Tap to open camera';
+  document.getElementById('scanFilename').textContent = '';
+  document.getElementById('scanPreviewContainer').style.display = 'none';
+  document.getElementById('extraPagesArea').style.display = 'none';
+  document.getElementById('extraPagesList').innerHTML = '';
+
   updateButtons();
-  setStatus('🔄 Reset — ready for next receipt', 'info');
+  setStatus('Ready for next receipt', 'info');
 }
 </script>
 </body>
