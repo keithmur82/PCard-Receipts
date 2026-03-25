@@ -3,41 +3,70 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Receipt Stamper</title>
+<title>MIT Biology — Receipt Stamper</title>
 <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
+
 body{
   font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;
-  background:linear-gradient(145deg,#0a0a1a 0%,#1a1a3e 50%,#0d0d2b 100%);
-  color:#e0e0e0;min-height:100vh;padding:20px;
+  background:#0D3551;
+  color:#e0e0e0;min-height:100vh;padding:0;
 }
-.container{max-width:600px;margin:0 auto}
-h1{
-  text-align:center;font-size:28px;font-weight:700;margin-bottom:8px;
-  background:linear-gradient(135deg,#C02184,#00A2C2,#00A793);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+
+/* ── Top Banner ── */
+.banner{
+  background:linear-gradient(135deg,#0D3551 0%,#771A51 100%);
+  padding:30px 20px 24px 20px;
+  text-align:center;
+  border-bottom:3px solid #C02184;
 }
-.subtitle{text-align:center;color:rgba(255,255,255,0.4);font-size:14px;margin-bottom:30px}
+.banner h1{
+  font-size:26px;font-weight:700;color:#ffffff;margin-bottom:4px;
+}
+.banner .subtitle{
+  font-size:14px;color:rgba(255,255,255,0.55);
+}
+.logo-bar{
+  display:flex;justify-content:center;align-items:center;
+  gap:12px;margin-bottom:12px;
+}
+.logo-dot{
+  width:10px;height:10px;border-radius:50%;
+}
+
+/* ── Main Container ── */
+.container{
+  max-width:600px;margin:0 auto;padding:20px;
+}
+
+/* ── Cards ── */
 .card{
-  background:linear-gradient(135deg,rgba(30,30,60,0.8),rgba(20,20,50,0.9));
-  border:1px solid rgba(255,255,255,0.08);border-radius:16px;
+  background:linear-gradient(135deg,rgba(13,53,81,0.95),rgba(13,53,81,0.8));
+  border:1px solid rgba(0,167,147,0.15);
+  border-radius:16px;
   padding:24px;margin-bottom:16px;
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
 }
 .card-title{
   font-size:13px;font-weight:600;text-transform:uppercase;
-  letter-spacing:1.2px;color:rgba(255,255,255,0.4);margin-bottom:14px;
+  letter-spacing:1.2px;color:#00A793;margin-bottom:14px;
 }
 .step-num{
-  display:inline-block;background:linear-gradient(135deg,#C02184,#771A51);
+  display:inline-block;
+  background:#C02184;
   color:white;width:24px;height:24px;border-radius:8px;text-align:center;
   line-height:24px;font-size:12px;font-weight:700;margin-right:8px;
 }
+
+/* ── Upload Zone ── */
 .upload-zone{
-  border:2px dashed rgba(192,33,132,0.4);border-radius:12px;
+  border:2px dashed rgba(0,162,194,0.4);border-radius:12px;
   padding:40px 20px;text-align:center;cursor:pointer;
-  transition:all 0.3s;background:rgba(192,33,132,0.05);
+  transition:all 0.3s;background:rgba(0,162,194,0.05);
+}
+.upload-zone:active{
+  background:rgba(0,162,194,0.12);
 }
 .upload-zone.has-file{
   border-color:rgba(0,167,147,0.6);background:rgba(0,167,147,0.08);
@@ -46,13 +75,22 @@ h1{
 .upload-text{font-size:16px;color:rgba(255,255,255,0.6)}
 .upload-filename{font-size:14px;color:#00A793;margin-top:8px;font-weight:600}
 #fileInput{display:none}
-.text-input,.folder-input{
-  width:100%;background:rgba(0,0,0,0.3);
-  border:1px solid rgba(255,255,255,0.1);border-radius:10px;
+
+/* ── Inputs ── */
+.text-input{
+  width:100%;background:rgba(0,0,0,0.25);
+  border:1px solid rgba(0,167,147,0.2);border-radius:10px;
   padding:14px 16px;color:#fff;font-size:16px;font-family:inherit;outline:none;
+  transition:border-color 0.3s;
 }
-.text-input:focus,.folder-input:focus{border-color:rgba(192,33,132,0.6)}
+.text-input:focus{border-color:#00A2C2}
 .text-input::placeholder{color:rgba(255,255,255,0.25)}
+
+.input-label{
+  font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:8px;display:block;
+}
+
+/* ── Font Size ── */
 .font-size-row{display:flex;align-items:center;gap:12px;margin-top:12px}
 .font-size-row label{font-size:13px;color:rgba(255,255,255,0.5);white-space:nowrap}
 .font-size-slider{
@@ -60,51 +98,54 @@ h1{
   background:rgba(255,255,255,0.1);outline:none;
 }
 .font-size-slider::-webkit-slider-thumb{
-  -webkit-appearance:none;width:22px;height:22px;border-radius:50%;
+  -webkit-appearance:none;width:24px;height:24px;border-radius:50%;
   background:linear-gradient(135deg,#C02184,#771A51);cursor:pointer;
+  border:2px solid rgba(255,255,255,0.3);
 }
-.font-size-value{font-size:14px;color:#C02184;font-weight:600;min-width:35px;text-align:center}
-.color-row{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
-.color-option{
-  width:36px;height:36px;border-radius:50%;border:2px solid transparent;
-  cursor:pointer;transition:all 0.2s;
-}
-.color-option:hover{transform:scale(1.15)}
-.color-option.selected{border-color:white;box-shadow:0 0 12px rgba(255,255,255,0.3)}
-.color-label{
-  font-size:10px;color:rgba(255,255,255,0.35);text-align:center;
-  margin-top:4px;
-}
-.color-wrap{display:flex;flex-direction:column;align-items:center}
+.font-size-value{font-size:14px;color:#00A2C2;font-weight:600;min-width:35px;text-align:center}
+
+/* ── Buttons ── */
 .btn-primary{
   width:100%;padding:16px;border:none;border-radius:12px;font-size:17px;
   font-weight:700;cursor:pointer;transition:all 0.3s;
-  background:linear-gradient(135deg,#C02184,#771A51);
-  color:white;letter-spacing:0.5px;box-shadow:0 4px 20px rgba(192,33,132,0.3);
+  color:white;letter-spacing:0.5px;
 }
-.btn-primary:disabled{opacity:0.4;cursor:not-allowed}
+.btn-primary:disabled{opacity:0.35;cursor:not-allowed}
+.btn-primary:active:not(:disabled){transform:scale(0.98)}
+
+.btn-stamp{
+  background:linear-gradient(135deg,#C02184,#771A51);
+  box-shadow:0 4px 20px rgba(192,33,132,0.3);
+}
+
+.btn-save{
+  background:linear-gradient(135deg,#00A793,#00A2C2);
+  box-shadow:0 4px 20px rgba(0,167,147,0.3);
+  margin-top:10px;
+}
+
 .btn-secondary{
-  width:100%;padding:14px;border:1px solid rgba(255,255,255,0.15);
+  width:100%;padding:14px;border:1px solid rgba(0,167,147,0.25);
   border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;
-  background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.7);
+  background:rgba(0,167,147,0.08);color:rgba(255,255,255,0.7);
   transition:all 0.3s;margin-top:10px;
 }
-.btn-dropbox{
-  background:linear-gradient(135deg,#0061fe,#0d84ff);
-  box-shadow:0 4px 20px rgba(0,97,254,0.3);
-}
+.btn-secondary:active{background:rgba(0,167,147,0.15)}
+
+/* ── Status ── */
 .status-bar{margin-top:16px;padding:14px 16px;border-radius:10px;font-size:14px;display:none}
 .status-bar.info{display:block;background:rgba(0,162,194,0.1);border:1px solid rgba(0,162,194,0.3);color:#00A2C2}
 .status-bar.success{display:block;background:rgba(0,167,147,0.1);border:1px solid rgba(0,167,147,0.3);color:#00A793}
 .status-bar.error{display:block;background:rgba(192,33,132,0.1);border:1px solid rgba(192,33,132,0.3);color:#C02184}
-.preview-frame{width:100%;height:400px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:white;margin-top:12px;display:none}
-.auth-status{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:12px}
-.auth-status.connected{background:rgba(0,167,147,0.1);color:#00A793}
-.auth-status.disconnected{background:rgba(192,33,132,0.1);color:#C02184}
-.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
-.dot.green{background:#00A793}.dot.red{background:#C02184}
-.progress-bar{width:100%;height:4px;background:rgba(255,255,255,0.1);border-radius:2px;margin-top:12px;overflow:hidden;display:none}
-.progress-fill{height:100%;background:linear-gradient(90deg,#C02184,#00A2C2);border-radius:2px;transition:width 0.3s;width:0%}
+
+/* ── Preview ── */
+.preview-frame{
+  width:100%;height:500px;border-radius:10px;
+  border:1px solid rgba(0,167,147,0.2);background:white;
+  margin-top:12px;display:none;
+}
+
+/* ── Spinner ── */
 .spinner{
   display:inline-block;width:16px;height:16px;
   border:2px solid rgba(255,255,255,0.2);border-top-color:white;
@@ -112,31 +153,47 @@ h1{
   margin-right:8px;vertical-align:middle;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── Footer ── */
+.footer{
+  text-align:center;padding:20px;
+  color:rgba(255,255,255,0.2);font-size:11px;
+}
+.footer-colors{
+  display:flex;justify-content:center;gap:6px;margin-bottom:8px;
+}
+.footer-dot{width:8px;height:8px;border-radius:50%}
+
+/* ── Reset Button ── */
+.btn-reset{
+  width:100%;padding:14px;border:1px solid rgba(192,33,132,0.25);
+  border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;
+  background:rgba(192,33,132,0.08);color:rgba(255,255,255,0.5);
+  transition:all 0.3s;margin-top:10px;
+}
+.btn-reset:active{background:rgba(192,33,132,0.15)}
 </style>
 </head>
 <body>
-<div class="container">
 
-<h1>📄 Receipt Stamper</h1>
-<p class="subtitle">MIT Biology — Annotate PDFs → Upload to Dropbox</p>
-
-<!-- STEP 1 -->
-<div class="card">
-  <div class="card-title"><span class="step-num">1</span> Dropbox Connection</div>
-  <div id="authStatus" class="auth-status disconnected">
-    <span class="dot red"></span> Not connected
+<!-- ── BANNER ── -->
+<div class="banner">
+  <div class="logo-bar">
+    <div class="logo-dot" style="background:#C02184"></div>
+    <div class="logo-dot" style="background:#771A51"></div>
+    <div class="logo-dot" style="background:#0D3551"></div>
+    <div class="logo-dot" style="background:#00A793"></div>
+    <div class="logo-dot" style="background:#00A2C2"></div>
   </div>
-  <button class="btn-primary btn-dropbox" id="btnAuth" onclick="connectDropbox()">
-    Connect to Dropbox
-  </button>
-  <button class="btn-secondary" id="btnDisconnect" onclick="disconnectDropbox()" style="display:none">
-    Disconnect
-  </button>
+  <h1>📄 Receipt Stamper</h1>
+  <div class="subtitle">MIT Biology — Stamp &amp; Save PDFs</div>
 </div>
 
-<!-- STEP 2 -->
+<div class="container">
+
+<!-- STEP 1: SELECT PDF -->
 <div class="card">
-  <div class="card-title"><span class="step-num">2</span> Select Receipt PDF</div>
+  <div class="card-title"><span class="step-num">1</span> Select Receipt PDF</div>
   <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
     <div class="upload-icon" id="uploadIcon">📎</div>
     <div class="upload-text" id="uploadText">Tap to select a PDF</div>
@@ -145,137 +202,63 @@ h1{
   <input type="file" id="fileInput" accept="application/pdf" onchange="handleFile(this)">
 </div>
 
-<!-- STEP 3 -->
+<!-- STEP 2: OVERLAY TEXT -->
 <div class="card">
-  <div class="card-title"><span class="step-num">3</span> Overlay Text</div>
+  <div class="card-title"><span class="step-num">2</span> Overlay Text</div>
   <input type="text" class="text-input" id="overlayText" placeholder="e.g. SUBMITTED - Q1 2026" value="SUBMITTED">
   <div class="font-size-row">
     <label>Size</label>
     <input type="range" class="font-size-slider" id="fontSize" min="12" max="48" value="26" oninput="updateFontSizeLabel()">
     <span class="font-size-value" id="fontSizeLabel">26pt</span>
   </div>
-  <div class="font-size-row">
-    <label>Color</label>
-    <div class="color-row" id="colorRow">
-      <div class="color-wrap">
-        <div class="color-option selected" style="background:#C02184" data-color="#C02184" onclick="selectColor(this)"></div>
-        <span class="color-label">Pink</span>
-      </div>
-      <div class="color-wrap">
-        <div class="color-option" style="background:#771A51" data-color="#771A51" onclick="selectColor(this)"></div>
-        <span class="color-label">Burgundy</span>
-      </div>
-      <div class="color-wrap">
-        <div class="color-option" style="background:#0D3551" data-color="#0D3551" onclick="selectColor(this)"></div>
-        <span class="color-label">Navy</span>
-      </div>
-      <div class="color-wrap">
-        <div class="color-option" style="background:#00A793" data-color="#00A793" onclick="selectColor(this)"></div>
-        <span class="color-label">Teal</span>
-      </div>
-      <div class="color-wrap">
-        <div class="color-option" style="background:#00A2C2" data-color="#00A2C2" onclick="selectColor(this)"></div>
-        <span class="color-label">Blue</span>
-      </div>
-    </div>
-  </div>
 </div>
 
-<!-- STEP 4 -->
+<!-- STEP 3: NAME YOUR FILE -->
 <div class="card">
-  <div class="card-title"><span class="step-num">4</span> Dropbox Folder</div>
-  <input type="text" class="folder-input" id="dropboxFolder" value="/MIT/Keith Murray/PCards/Keith PCard Receipts/Incoming" placeholder="/MIT/Keith Murray/PCards/Keith PCard Receipts/Incoming">
+  <div class="card-title"><span class="step-num">3</span> Save As</div>
+  <span class="input-label">File name (without .pdf)</span>
+  <input type="text" class="text-input" id="outputName" placeholder="e.g. Lunch_Receipt_Jan2026">
 </div>
 
-<!-- ACTIONS -->
+<!-- STEP 4: ACTIONS -->
 <div class="card">
-  <button class="btn-primary" id="btnProcess" onclick="processReceipt()" disabled>
-    📝 Stamp &amp; Upload
-  </button>
-  <button class="btn-secondary" id="btnPreview" onclick="previewPdf()" disabled>
+  <button class="btn-primary btn-stamp" id="btnPreview" onclick="previewPdf()" disabled>
     👁 Preview Stamped PDF
   </button>
-  <button class="btn-secondary" id="btnDownload" onclick="downloadPdf()" style="display:none">
-    💾 Download Locally
+
+  <button class="btn-primary btn-save" id="btnSave" onclick="savePdf()" style="display:none">
+    💾 Save PDF
   </button>
-  <div class="progress-bar" id="progressBar">
-    <div class="progress-fill" id="progressFill"></div>
-  </div>
+
+  <button class="btn-reset" id="btnReset" onclick="resetAll()" style="display:none">
+    🔄 Start Over
+  </button>
+
   <div class="status-bar" id="statusBar"></div>
   <iframe class="preview-frame" id="previewFrame"></iframe>
 </div>
 
 </div>
 
-<script>
-// ═══════════════════════════════════════
-//  PUT YOUR DROPBOX APP KEY HERE
-// ═══════════════════════════════════════
-const DROPBOX_APP_KEY = 'YOUR_APP_KEY_HERE';
+<!-- ── FOOTER ── -->
+<div class="footer">
+  <div class="footer-colors">
+    <div class="footer-dot" style="background:#C02184"></div>
+    <div class="footer-dot" style="background:#771A51"></div>
+    <div class="footer-dot" style="background:#0D3551"></div>
+    <div class="footer-dot" style="background:#00A793"></div>
+    <div class="footer-dot" style="background:#00A2C2"></div>
+  </div>
+  MIT Biology — Receipt Stamper
+</div>
 
+<script>
 // ═══════════════════════════════════════
 //  STATE
 // ═══════════════════════════════════════
 var selectedFile = null;
 var selectedFileBytes = null;
 var stampedPdfBytes = null;
-var dropboxToken = localStorage.getItem('dropbox_token') || null;
-var selectedColor = '#C02184';
-
-// ═══════════════════════════════════════
-//  ON LOAD — handle OAuth redirect
-// ═══════════════════════════════════════
-window.addEventListener('load', function() {
-  var hash = window.location.hash;
-  if (hash && hash.indexOf('access_token') !== -1) {
-    var params = new URLSearchParams(hash.substring(1));
-    var token = params.get('access_token');
-    if (token) {
-      dropboxToken = token;
-      localStorage.setItem('dropbox_token', token);
-      history.replaceState(null, '', window.location.pathname);
-    }
-  }
-  updateAuthUI();
-});
-
-// ═══════════════════════════════════════
-//  DROPBOX AUTH
-// ═══════════════════════════════════════
-function connectDropbox() {
-  var redirect = window.location.origin + window.location.pathname;
-  var url = 'https://www.dropbox.com/oauth2/authorize'
-    + '?client_id=' + DROPBOX_APP_KEY
-    + '&response_type=token'
-    + '&redirect_uri=' + encodeURIComponent(redirect)
-    + '&token_access_type=online';
-  window.location.href = url;
-}
-
-function disconnectDropbox() {
-  dropboxToken = null;
-  localStorage.removeItem('dropbox_token');
-  updateAuthUI();
-  setStatus('Disconnected from Dropbox', 'info');
-}
-
-function updateAuthUI() {
-  var el = document.getElementById('authStatus');
-  var btnA = document.getElementById('btnAuth');
-  var btnD = document.getElementById('btnDisconnect');
-  if (dropboxToken) {
-    el.className = 'auth-status connected';
-    el.innerHTML = '<span class="dot green"></span> Connected to Dropbox';
-    btnA.style.display = 'none';
-    btnD.style.display = 'block';
-  } else {
-    el.className = 'auth-status disconnected';
-    el.innerHTML = '<span class="dot red"></span> Not connected';
-    btnA.style.display = 'block';
-    btnD.style.display = 'none';
-  }
-  updateButtons();
-}
 
 // ═══════════════════════════════════════
 //  FILE HANDLING
@@ -284,11 +267,16 @@ function handleFile(input) {
   var file = input.files[0];
   if (!file) return;
   if (file.type !== 'application/pdf') {
-    setStatus('Please select a PDF file', 'error');
+    setStatus('❌ Please select a PDF file', 'error');
     return;
   }
   selectedFile = file;
   stampedPdfBytes = null;
+
+  // Auto-fill the save name from the original filename
+  var baseName = file.name.replace('.pdf', '').replace('.PDF', '');
+  document.getElementById('outputName').value = baseName + '_stamped';
+
   var reader = new FileReader();
   reader.onload = function(e) {
     selectedFileBytes = new Uint8Array(e.target.result);
@@ -309,6 +297,11 @@ function updateFileUI() {
     icon.textContent = '✅';
     text.textContent = 'PDF loaded — tap to change';
     fname.textContent = selectedFile.name;
+  } else {
+    zone.classList.remove('has-file');
+    icon.textContent = '📎';
+    text.textContent = 'Tap to select a PDF';
+    fname.textContent = '';
   }
 }
 
@@ -320,16 +313,7 @@ function updateFontSizeLabel() {
     document.getElementById('fontSize').value + 'pt';
 }
 
-function selectColor(el) {
-  document.querySelectorAll('.color-option').forEach(function(c) {
-    c.classList.remove('selected');
-  });
-  el.classList.add('selected');
-  selectedColor = el.dataset.color;
-}
-
 function updateButtons() {
-  document.getElementById('btnProcess').disabled = !(selectedFileBytes && dropboxToken);
   document.getElementById('btnPreview').disabled = !selectedFileBytes;
 }
 
@@ -337,26 +321,6 @@ function setStatus(msg, type) {
   var el = document.getElementById('statusBar');
   el.className = 'status-bar ' + type;
   el.innerHTML = msg;
-}
-
-function showProgress(pct) {
-  document.getElementById('progressBar').style.display = 'block';
-  document.getElementById('progressFill').style.width = pct + '%';
-}
-
-function hideProgress() {
-  document.getElementById('progressBar').style.display = 'none';
-}
-
-// ═══════════════════════════════════════
-//  COLOR HELPER
-// ═══════════════════════════════════════
-function hexToRgb(hex) {
-  return {
-    r: parseInt(hex.slice(1, 3), 16) / 255,
-    g: parseInt(hex.slice(3, 5), 16) / 255,
-    b: parseInt(hex.slice(5, 7), 16) / 255
-  };
 }
 
 // ═══════════════════════════════════════
@@ -373,13 +337,13 @@ async function stampPdf() {
   var pdfDoc = await PDFDocument.load(selectedFileBytes);
   var font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
   var pages = pdfDoc.getPages();
-  var color = hexToRgb(selectedColor);
 
   // ── FIRST PAGE ONLY ──
   var page = pages[0];
   var size = page.getSize();
   var textWidth = font.widthOfTextAtSize(overlayText, fontSize);
 
+  // Top centered
   var x = (size.width - textWidth) / 2;
   var y = size.height - 50;
   var pad = 12;
@@ -391,18 +355,18 @@ async function stampPdf() {
     width: textWidth + pad * 2,
     height: fontSize + 14,
     color: rgb(1, 1, 1),
-    borderColor: rgb(0.3, 0.3, 0.3),
+    borderColor: rgb(0.05, 0.21, 0.32),  // MIT Navy border
     borderWidth: 1,
     opacity: 0.95
   });
 
-  // Colored text
+  // MIT Navy text
   page.drawText(overlayText, {
     x: x,
     y: y,
     size: fontSize,
     font: font,
-    color: rgb(color.r, color.g, color.b)
+    color: rgb(0.05, 0.21, 0.32)  // #0D3551 MIT Navy
   });
 
   stampedPdfBytes = await pdfDoc.save();
@@ -421,105 +385,72 @@ async function previewPdf() {
     var frame = document.getElementById('previewFrame');
     frame.src = url;
     frame.style.display = 'block';
-    document.getElementById('btnDownload').style.display = 'block';
-    setStatus('Preview ready!', 'success');
+
+    // Show save & reset buttons
+    document.getElementById('btnSave').style.display = 'block';
+    document.getElementById('btnReset').style.display = 'block';
+
+    setStatus('✅ Preview ready — check it below, then tap Save', 'success');
   } catch (err) {
-    setStatus('Preview failed: ' + err.message, 'error');
+    setStatus('❌ Error: ' + err.message, 'error');
   }
 }
 
 // ═══════════════════════════════════════
-//  LOCAL DOWNLOAD
+//  SAVE / DOWNLOAD
+//  On iPad Safari this opens the Share
+//  sheet so you can pick Files, AirDrop,
+//  Dropbox, etc.
 // ═══════════════════════════════════════
-function downloadPdf() {
+function savePdf() {
   if (!stampedPdfBytes) return;
+
+  var fileName = document.getElementById('outputName').value.trim();
+  if (!fileName) {
+    fileName = 'receipt_stamped';
+  }
+  // Make sure it ends with .pdf
+  if (!fileName.toLowerCase().endsWith('.pdf')) {
+    fileName += '.pdf';
+  }
+
   var blob = new Blob([stampedPdfBytes], { type: 'application/pdf' });
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
   a.href = url;
-  a.download = selectedFile.name.replace('.pdf', '') + '_stamped.pdf';
+  a.download = fileName;
+  document.body.appendChild(a);
   a.click();
-  URL.revokeObjectURL(url);
+  document.body.removeChild(a);
+
+  setTimeout(function() {
+    URL.revokeObjectURL(url);
+  }, 5000);
+
+  setStatus('✅ Saving <strong>' + fileName + '</strong> — check your Downloads or choose a location from the share sheet', 'success');
 }
 
 // ═══════════════════════════════════════
-//  DROPBOX UPLOAD
+//  RESET
 // ═══════════════════════════════════════
-async function uploadToDropbox(pdfBytes) {
-  var folder = document.getElementById('dropboxFolder').value.trim() || '/MIT/Keith Murray/PCards/Keith PCard Receipts/Incoming';
-  var baseName = selectedFile.name.replace('.pdf', '');
-  var now = new Date();
-  var ts = now.getFullYear().toString()
-    + ('0' + (now.getMonth()+1)).slice(-2)
-    + ('0' + now.getDate()).slice(-2)
-    + '_'
-    + ('0' + now.getHours()).slice(-2)
-    + ('0' + now.getMinutes()).slice(-2)
-    + ('0' + now.getSeconds()).slice(-2);
-  var fileName = baseName + '_stamped_' + ts + '.pdf';
-  var dropboxPath = folder + '/' + fileName;
+function resetAll() {
+  selectedFile = null;
+  selectedFileBytes = null;
+  stampedPdfBytes = null;
 
-  var response = await fetch('https://content.dropboxapi.com/2/files/upload', {
-    method: 'POST',
-    headers: {
-      'Authorization': 'Bearer ' + dropboxToken,
-      'Dropbox-API-Arg': JSON.stringify({
-        path: dropboxPath,
-        mode: 'add',
-        autorename: true,
-        mute: false
-      }),
-      'Content-Type': 'application/octet-stream'
-    },
-    body: pdfBytes
-  });
+  document.getElementById('fileInput').value = '';
+  document.getElementById('overlayText').value = 'SUBMITTED';
+  document.getElementById('outputName').value = '';
+  document.getElementById('fontSize').value = 26;
+  document.getElementById('fontSizeLabel').textContent = '26pt';
+  document.getElementById('previewFrame').style.display = 'none';
+  document.getElementById('previewFrame').src = '';
+  document.getElementById('btnSave').style.display = 'none';
+  document.getElementById('btnReset').style.display = 'none';
 
-  if (!response.ok) {
-    var errText = await response.text();
-    if (response.status === 401) {
-      disconnectDropbox();
-      throw new Error('Token expired — please reconnect to Dropbox');
-    }
-    throw new Error('Dropbox error ' + response.status + ': ' + errText);
-  }
-
-  return await response.json();
-}
-
-// ═══════════════════════════════════════
-//  MAIN PROCESS
-// ═══════════════════════════════════════
-async function processReceipt() {
-  var btn = document.getElementById('btnProcess');
-  try {
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span> Processing...';
-
-    setStatus('<span class="spinner"></span> Stamping PDF...', 'info');
-    showProgress(30);
-    var bytes = await stampPdf();
-
-    setStatus('<span class="spinner"></span> Uploading to Dropbox...', 'info');
-    showProgress(70);
-    var result = await uploadToDropbox(bytes);
-
-    showProgress(100);
-    document.getElementById('btnDownload').style.display = 'block';
-
-    setStatus(
-      '✅ Done! Uploaded to <strong>' + result.path_display + '</strong><br>'
-      + '📦 Size: ' + (result.size / 1024).toFixed(1) + ' KB',
-      'success'
-    );
-    setTimeout(hideProgress, 2000);
-  } catch (err) {
-    hideProgress();
-    setStatus('❌ ' + err.message, 'error');
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = '📝 Stamp &amp; Upload';
-    updateButtons();
-  }
+  updateFileUI();
+  updateButtons();
+  setStatus('🔄 Reset — ready for next receipt', 'info');
 }
 </script>
 </body>
