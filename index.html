@@ -256,16 +256,26 @@ async function dropboxRequest(endpoint, body, upload = false) {
   } else { headers['Content-Type'] = 'application/json'; payload = JSON.stringify(body); }
   const response = await fetch((upload ? 'https://content.dropboxapi.com/2/' : 'https://api.dropboxapi.com/2/')+endpoint,{method:'POST',headers,body:payload});
   if (!response.ok) {
-    if (response.status === 401) throw new Error('Dropbox session expired or was revoked. Disconnect and connect again.');
-    if (response.status === 403) throw new Error('Dropbox denied access. Check your app permissions and your access to this shared folder.');
-    if (response.status === 429) throw new Error('Dropbox is busy. Wait a moment before trying again.');
-    let data; try { data = await response.json(); } catch { data = {}; }
-    const detail = data.error_summary || '';
-    if (detail.includes('no_write_permission')) throw new Error('You do not have permission to save into this shared folder. Choose a folder where you can edit.');
-    if (detail.includes('insufficient_space')) throw new Error('Dropbox does not have enough free space for this receipt.');
-    if (detail.includes('not_found') || detail.includes('invalid_root')) throw new Error('The Dropbox folder is no longer available. Choose your destination again.');
-    if (detail.includes('missing_scope')) throw new Error('Enable the required permissions in the Dropbox App Console, then disconnect and connect again.');
-    throw new Error('Dropbox could not complete this request (HTTP ' + response.status + '). ' + detail);
+    // Dropbox can return HTTP 400 explanations as plain text rather than JSON.
+    // Read once as text so a failed JSON parse cannot discard the explanation.
+    let raw = ''; try { raw = await response.text(); } catch {}
+    let data = {}; try { data = JSON.parse(raw) || {}; } catch {}
+    let detail = String(data.error_summary || data.user_message?.text || data.error_description || raw || 'Dropbox returned no explanation.');
+    // Keep diagnostics safe to copy, even if a service echoes a request header.
+    if (dropboxSession?.accessToken) detail = detail.split(dropboxSession.accessToken).join('[redacted]');
+    detail = detail.replace(/Bearer\s+\S+/gi,'Bearer [redacted]').slice(0,2000);
+    const diagnostic = 'Dropbox ' + endpoint + ' (HTTP ' + response.status + '): ' + detail;
+    let help = '';
+    if (response.status === 401) help = 'Dropbox session expired or was revoked. Disconnect and connect again.';
+    else if (response.status === 429) help = 'Dropbox is busy. Wait a moment before trying again.';
+    else if (/missing_scope|required scope|does not have.*scope|scope.*not.*enabled/i.test(detail)) help = 'In the Dropbox App Console, enable and submit account_info.read, files.metadata.read, and files.content.write. Then disconnect and connect again to authorize those permissions.';
+    else if (/sandbox|app.?folder|full.?dropbox/i.test(detail)) help = 'Saving into an existing shared folder requires a Dropbox app with Full Dropbox access. Check the app access type in the Dropbox App Console. If it is App folder, create a Full Dropbox app, enter its app key in Dropbox setup, then reconnect.';
+    else if (detail.includes('no_write_permission')) help = 'You do not have permission to save into this shared folder. Choose a folder where you can edit.';
+    else if (detail.includes('insufficient_space')) help = 'Dropbox does not have enough free space for this receipt.';
+    else if (detail.includes('invalid_root')) help = 'Your Dropbox team folder information changed. Disconnect and connect again, then choose your destination.';
+    else if (detail.includes('not_found')) help = 'The Dropbox folder is no longer available. Choose your destination again.';
+    else if (response.status === 403) help = 'Dropbox denied access. Check your app permissions and your access to this shared folder.';
+    throw new Error((help ? help + ' ' : '') + diagnostic);
   }
   return response.json();
 }
